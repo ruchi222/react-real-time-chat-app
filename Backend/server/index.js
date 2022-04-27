@@ -13,8 +13,8 @@ const app = express();
 const server = http.createServer(app);
 app.use(express.static(publicPath));
 
-var io = socketIO(server);
-var users = new Users();
+const io = socketIO(server);
+const users = new Users();
 
 io.on('connection', (socket) => {
 
@@ -40,7 +40,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('createMessage', (message, callback) => {
-        var user = users.getUser(socket.id);
+        const user = users.getUser(socket.id);
         if (user && isRealString(message.text)) {
             let tempObj = generateMessage(user.name, user.room, message.text);
             io.to(user.room).emit('newMessage', tempObj);
@@ -52,7 +52,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('createLocationMsg', (coords) => {
-        var user = users.getUser(socket.id);
+        const user = users.getUser(socket.id);
         if (user) {
             io.to(user.room).emit('createLocationMsg', generateLocationMessage(user.name, user.room, coords.lat, coords.lon));
         }
